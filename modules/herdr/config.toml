@@ -1,0 +1,31 @@
+onboarding = false
+
+[theme]
+name = "rose-pine"
+auto_switch = false
+
+[ui.sound]
+enabled = true
+
+[keys]
+prefix = "ctrl+space"
+
+# Config
+reload_config = "prefix+q"
+help = "prefix+?"
+detach = "prefix+d"
+
+# Panes
+split_horizontal = "prefix+h"
+split_vertical = "prefix+v"
+close_pane = "prefix+x"
+zoom = "prefix+z"
+last_pane = "prefix+;"
+
+# Agents
+previous_agent = "prefix+ctrl+p"
+next_agent = "prefix+ctrl+n"
+focus_agent = "prefix+ctrl+1..9"
+
+[ui.toast]
+delivery = "herdr"
