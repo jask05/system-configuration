@@ -53,5 +53,5 @@ Cada módulo es autocontenido. Añadir algo nuevo = crear una carpeta en
 | Módulo | Qué hace |
 | --- | --- |
 | `claude-statusline` | Instala la statusline de dos líneas de Claude Code (modelo, contexto, uso 5h/7d, git, coste) |
-| `herdr` | Copia la config de [herdr](https://herdr.dev) (tema, keybindings) y registra su integración con Claude Code |
+| `herdr` | Instala [herdr](https://herdr.dev) (instalador oficial), copia su config (tema, keybindings) y registra su integración con Claude Code. Pregunta si quieres instalar, configurar o ambos tras comprobar si ya está instalado |
 | `atuin` | Instala [atuin](https://atuin.sh) (historial de shell sincronizado) vía su instalador oficial |
