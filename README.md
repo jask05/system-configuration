@@ -55,3 +55,29 @@ Cada módulo es autocontenido. Añadir algo nuevo = crear una carpeta en
 | `claude-statusline` | Instala la statusline de dos líneas de Claude Code (modelo, contexto, uso 5h/7d, git, coste) |
 | `herdr` | Instala [herdr](https://herdr.dev) (instalador oficial), copia su config (tema, keybindings) y registra su integración con Claude Code. Pregunta si quieres instalar, configurar o ambos tras comprobar si ya está instalado |
 | `atuin` | Instala [atuin](https://atuin.sh) (historial de shell sincronizado) vía su instalador oficial |
+
+## Atajos de herdr
+
+Definidos en [`modules/herdr/config.toml`](modules/herdr/config.toml). Todos
+empiezan por el **prefijo `Ctrl+Space`**: se pulsa el prefijo, se suelta y
+luego la tecla.
+
+| Atajo | Acción |
+| --- | --- |
+| `Ctrl+Space` `?` | Ayuda (lista todos los atajos) |
+| `Ctrl+Space` `q` | Recargar la configuración |
+| `Ctrl+Space` `d` | Desconectarse (detach) sin cerrar la sesión |
+| **Paneles** | |
+| `Ctrl+Space` `h` | Dividir en horizontal |
+| `Ctrl+Space` `v` | Dividir en vertical |
+| `Ctrl+Space` `x` | Cerrar el panel actual |
+| `Ctrl+Space` `z` | Maximizar / restaurar el panel (zoom) |
+| `Ctrl+Space` `;` | Volver al último panel |
+| **Agentes** | |
+| `Ctrl+Space` `Ctrl+P` | Agente anterior |
+| `Ctrl+Space` `Ctrl+N` | Agente siguiente |
+| `Ctrl+Space` `Ctrl+1`…`Ctrl+9` | Ir al agente N |
+
+Los atajos que no aparecen aquí conservan el valor por defecto de herdr
+(consúltalos con `Ctrl+Space` `?`).
+
