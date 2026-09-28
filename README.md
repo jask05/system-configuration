@@ -55,6 +55,7 @@ Cada módulo es autocontenido. Añadir algo nuevo = crear una carpeta en
 | `claude-statusline` | Instala la statusline de dos líneas de Claude Code (modelo, contexto, uso 5h/7d, git, coste) |
 | `herdr` | Instala [herdr](https://herdr.dev) (instalador oficial), copia su config (tema, keybindings) y registra su integración con Claude Code. Pregunta si quieres instalar, configurar o ambos tras comprobar si ya está instalado |
 | `atuin` | Instala [atuin](https://atuin.sh) (historial de shell sincronizado) vía su instalador oficial |
+| `vim` | Copia mi `~/.vimrc` y crea `~/.vim/{undo,swap,backup}`. Si vim no está, ofrece instalarlo con `apt-get`, `dnf` o `brew` |
 
 ## Atajos de herdr
 
@@ -81,3 +82,30 @@ luego la tecla.
 Los atajos que no aparecen aquí conservan el valor por defecto de herdr
 (consúltalos con `Ctrl+Space` `?`).
 
+## Vim
+
+El módulo `vim` copia [`modules/vim/vimrc`](modules/vim/vimrc) a `~/.vimrc`,
+pensado sobre todo para los VPS donde se despliega este repo. Lo que conviene
+saber:
+
+- **Deshacer persistente**: el historial de deshacer sobrevive al cerrar el
+  fichero (`~/.vim/undo`). Swap y backups van a `~/.vim/swap` y
+  `~/.vim/backup`, no a la carpeta de trabajo.
+- **Portapapeles**: `clipboard=unnamed` solo funciona si vim tiene
+  `+clipboard` (en macOS sí). En un VPS normalmente no: la opción no da error,
+  simplemente yank/put se quedan dentro de vim.
+- **Atajos propios**:
+  - `Ctrl+L` — quita el resaltado de la última búsqueda.
+  - `j` / `k` — se mueven por línea visual en texto con wrap (con número
+    delante, p. ej. `5j`, se mueven por línea real).
+- Al reabrir un fichero vuelve a la última posición del cursor.
+- Sangrado de 4 espacios; 2 en YAML, JSON, HTML, CSS y JavaScript.
+- `Esc` sin retardo (`ttimeoutlen=50`), algo que se nota dentro de herdr y por SSH.
+- Muestra tabuladores (`»·`) y espacios al final de línea (`·`), salvo en Markdown y texto.
+- No guarda historial de deshacer para `/tmp`, `/dev/shm` ni ficheros `.env`,
+  porque ese fichero contiene una copia del contenido.
+- Para editar ficheros de root usa `sudoedit <fichero>`: `sudo vim` no carga
+  este vimrc.
+
+Esta copia parte de mi `~/.vimrc` del Mac pero tiene ajustes para VPS: no la
+sobrescribas con `cp ~/.vimrc` sin revisar el diff.

@@ -1,0 +1,103 @@
+" ~/.vimrc
+
+" ---------------------------------------------------------------- básico
+set nocompatible              " comportamiento de Vim, no de Vi
+syntax on                     " resaltado de sintaxis
+filetype plugin indent on     " detección de tipo de fichero y su sangrado
+set encoding=utf-8            " los ficheros llevan acentos: sin esto se rompen
+set fileencoding=utf-8
+set backspace=indent,eol,start
+" Esc sin retardo: dentro de herdr o por SSH se nota al salir de inserción
+set ttimeout
+set ttimeoutlen=50
+
+" ---------------------------------------------------------------- pantalla
+set number                    " número de línea
+set ruler                     " posición del cursor en la barra inferior
+set laststatus=2              " barra de estado siempre visible
+set showcmd                   " muestra el comando a medio escribir
+set cursorline                " resalta la línea actual
+set scrolloff=3               " deja 3 líneas de margen al desplazarse
+set showmatch                 " marca el paréntesis o corchete emparejado
+set title                     " nombre del fichero en el título de la ventana
+set list                      " muestra tabuladores y espacios al final de línea
+set listchars=tab:»·,trail:·,nbsp:␣
+set wildmenu                  " autocompletado visual en la línea de comandos
+set wildmode=longest:full,full
+set splitright                " :vsplit abre a la derecha...
+set splitbelow                " ...y :split abajo
+
+" ---------------------------------------------------------------- búsqueda
+set incsearch                 " va buscando mientras escribes
+set hlsearch                  " resalta lo encontrado
+set ignorecase                " sin distinguir mayúsculas...
+set smartcase                 " ...salvo que escribas alguna mayúscula
+" Ctrl-L quita el resaltado de la última búsqueda
+nnoremap <silent> <C-l> :nohlsearch<CR><C-l>
+
+" ---------------------------------------------------------------- sangrado
+set expandtab                 " espacios en lugar de tabuladores
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set autoindent
+set shiftround                " el sangrado salta a múltiplos de shiftwidth
+
+" ---------------------------------------------------------------- portapapeles
+" Con esto, yank y put usan el portapapeles de macOS: se puede copiar de Vim
+" y pegar en Word directamente.
+set clipboard=unnamed
+
+" ---------------------------------------------------------------- ficheros
+" Crea los directorios si faltan, para que el vimrc funcione aunque se copie
+" suelto, sin pasar por el instalador.
+for s:dir in ['undo', 'swap', 'backup']
+  if !isdirectory(expand('~/.vim/' . s:dir))
+    call mkdir(expand('~/.vim/' . s:dir), 'p', 0700)
+  endif
+endfor
+" Deshacer persistente: los cambios de ayer se pueden deshacer hoy.
+set undofile
+set undodir=~/.vim/undo//
+set undolevels=1000
+" Los ficheros temporales van a un directorio propio y no ensucian la carpeta
+" de trabajo, que además está sincronizada con OneDrive.
+set directory=~/.vim/swap//
+set backupdir=~/.vim/backup//
+set autoread                  " recarga si el fichero cambió por fuera
+set hidden                    " permite cambiar de buffer sin guardar
+" El fichero de deshacer guarda una copia del contenido: no lo quiero para
+" temporales ni para ficheros con secretos.
+augroup sin_undo_sensible
+  autocmd!
+  autocmd BufWritePre /tmp/*,/private/tmp/*,/dev/shm/*,*.env,.env.* setlocal noundofile
+augroup END
+
+" ---------------------------------------------------------------- ratón
+" Rueda para desplazarse. Para seleccionar con el ratón y copiar al
+" portapapeles del sistema, mantén pulsada la tecla Opción.
+set mouse=a
+
+" ---------------------------------------------------------------- por tipo
+augroup ajustes_por_tipo
+  autocmd!
+  " YAML no admite tabuladores y usa dos espacios. Importa para las cabeceras
+  " de los ficheros 00_CONTEXTO.md.
+  autocmd FileType yaml,json setlocal tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType html,css,javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 textwidth=88
+  " Prosa: parte las líneas largas por palabras, no por caracteres, y mantiene
+  " el sangrado de las viñetas al continuar la línea.
+  autocmd FileType markdown,text setlocal wrap linebreak breakindent nolist
+        \ textwidth=0 wrapmargin=0
+  " El resaltado de Markdown de Vim se atraganta con ficheros largos
+  autocmd FileType markdown syntax sync minlines=200
+augroup END
+
+" ---------------------------------------------------------------- comodidades
+" j y k se mueven por línea visual en texto con wrap
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
+" Vuelve a la última posición al reabrir un fichero
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
+      \ | execute "normal! g`\"" | endif
